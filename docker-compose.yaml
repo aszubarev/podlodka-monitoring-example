@@ -32,7 +32,8 @@ services:
     ports:
       - "8000:8000"
     command: uvicorn server.main:app --host 0.0.0.0 --log-level critical
-
+    environment:
+      POSTGRES_DSN: postgresql://root:root@postgres:5432/test
 
 volumes:
   grafana-storage:
