@@ -1,0 +1,38 @@
+version: "3.6"
+services:
+  postgres:
+    image: postgres:11
+    restart: always
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "8432:5432"
+
+  prometheus:
+    image: "prom/prometheus"
+    ports:
+      - "9093:9090"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+
+  grafana:
+    image: "grafana/grafana"
+    ports:
+      - "3003:3000"
+    volumes:
+      - "grafana-storage:/var/lib/grafana"
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    command: uvicorn server.main:app --host 0.0.0.0 --log-level critical
+
+
+volumes:
+  grafana-storage:
