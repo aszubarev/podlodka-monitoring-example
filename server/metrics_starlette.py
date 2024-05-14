@@ -2,6 +2,7 @@ import time
 
 import prometheus_client
 from prometheus_client import Counter, Gauge, Histogram
+from prometheus_client.utils import INF
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
@@ -26,6 +27,7 @@ REQUESTS_PROCESSING_TIME = Histogram(
     name="starlette_requests_processing_time",
     documentation="Histogram of requests processing time by path (in seconds).",
     labelnames=["method", "path_template"],
+    buckets=(.005, .01, .02, .025, .03, .035, .04, .045, .05, .06, .07, .075, .1, .2, .3, .4, .5, .75, 1.0, INF),
 )
 RESPONSES = Counter(
     name="starlette_responses_total",

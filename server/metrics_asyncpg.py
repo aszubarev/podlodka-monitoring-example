@@ -1,7 +1,8 @@
 import time
 
 from asyncpg import Connection
-from prometheus_client import Counter, Histogram, Gauge, Info
+from prometheus_client import Counter, Histogram, Gauge
+from prometheus_client.utils import INF
 
 QUERIES = Counter(
     name="asyncpg_queries_total",
@@ -12,6 +13,7 @@ QUERIES_PROCESSING_TIME = Histogram(
     name="asyncpg_queries_processing_time_seconds",
     documentation="Histogram of queries processing time by addr (in seconds).",
     labelnames=["addr"],
+    buckets=(.005, .01, .02, .025, .03, .035, .04, .045, .05, .06, .07, .075, .1, .2, .3, .4, .5, .75, 1.0, INF),
 )
 EXCEPTIONS = Counter(
     name="asyncpg_exceptions_total",

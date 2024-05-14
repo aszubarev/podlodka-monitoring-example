@@ -3,3 +3,5 @@ uvicorn==0.29.0
 prometheus-client==0.20.0
 starlette==0.37.2
 asyncpg==0.29.0
+pydantic==2.7.1
+requests==2.31.0

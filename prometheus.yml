@@ -5,4 +5,9 @@ global:
 scrape_configs:
   - job_name: server
     static_configs:
-      - targets: ['server:8000']
+      - targets: ['server-1.1:8000', 'server-1.2:8000']
+        labels:
+          deployment: 'deployment-1'
+      - targets: [ 'server-2.1:8000']
+        labels:
+          deployment: 'deployment-2'

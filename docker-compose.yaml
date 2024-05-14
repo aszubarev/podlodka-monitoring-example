@@ -24,16 +24,65 @@ services:
     volumes:
       - "grafana-storage:/var/lib/grafana"
 
-  server:
+  server-1.1:
     build:
       context: .
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "8000:8000"
+      - "8011:8000"
     command: uvicorn server.main:app --host 0.0.0.0 --log-level critical
     environment:
       POSTGRES_DSN: postgresql://root:root@postgres:5432/test
+
+  server-1.2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8012:8000"
+    command: uvicorn server.main:app --host 0.0.0.0 --log-level critical
+    environment:
+      POSTGRES_DSN: postgresql://root:root@postgres:5432/test
+
+  server-2.1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8021:8000"
+    command: uvicorn server.main:app --host 0.0.0.0 --log-level critical
+    environment:
+      POSTGRES_DSN: postgresql://root:root@postgres:5432/test
+
+  client-1.1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: python client.py
+    environment:
+      BASE_URL: http://server-1.1:8000/
+
+  client-1.2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: python client.py
+    environment:
+      BASE_URL: http://server-1.2:8000/
+
+  client-2.1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: python client.py
+    environment:
+      BASE_URL: http://server-2.1:8000/
 
 volumes:
   grafana-storage:
